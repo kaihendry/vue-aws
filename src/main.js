@@ -1,3 +1,11 @@
-import {app} from './app'
+import Vue from 'vue'
+import App from './components/App.vue'
+import router from './router'
+import { signInHandler } from './lib/auth'
 
-app.$mount('#app')
+window.onSignIn = signInHandler
+
+new Vue({
+	router,
+	render: h => h(App),
+}).$mount('#app')

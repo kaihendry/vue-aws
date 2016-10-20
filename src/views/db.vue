@@ -13,6 +13,7 @@ Song title: {{ item.SongTitle }}
 </template>
 
 <script>
+import auth from '../lib/auth'
 import 'aws-sdk/clients/dynamodb'
 
 export default {
@@ -32,7 +33,7 @@ export default {
 			};
 
 			// http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB/DocumentClient.html#scan-property
-			window.docClient.scan(params, (err, data) => {
+			auth.awsClient.scan(params, (err, data) => {
 				console.log("error", err)
 				if (data) {
 					console.log(data)
