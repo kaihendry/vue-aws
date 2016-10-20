@@ -1,4 +1,4 @@
-# Goal
+# Authenticated serverless browser service
 
 Using AWS services from VueJS whilst authenticated from the browser.
 
