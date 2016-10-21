@@ -1,5 +1,6 @@
 <template>
 	<div id="app">
+		<p v-if="currentUser">{{currentUser.name}} <button @click="signOut">Sign Out</button></p>
 		<p>Goal: Google login &rarr; AWS login (STS) &rarr; AWS.DynamoDB.DocumentClient
 		<p>Without button. Without Window object ideally.
 		<p>
@@ -11,40 +12,34 @@
 </template>
 
 <script>
-import AWS from 'aws-sdk/global'
-
-window.onSignIn = function (googleUser) {
-
-	const profile = googleUser.getBasicProfile()
-	console.log(`ID: ${profile.getId()}`) // Don't send this directly to your server!
-	console.log(`Full Name: ${profile.getName()}`)
-	console.log(`Given Name: ${profile.getGivenName()}`)
-	console.log(`Family Name: ${profile.getFamilyName()}`)
-	console.log(`Image URL: ${profile.getImageUrl()}`)
-	console.log(`Email: ${profile.getEmail()}`)
-
-	// The ID token you need to pass to your backend:
-	const idToken = googleUser.getAuthResponse().id_token
-	console.log(`ID Token: ${idToken}`)
-
-	let bucket = null
-	const roleArn = 'arn:aws:iam::407461997746:role/vueaws'
-
-	AWS.config.credentials = new AWS.WebIdentityCredentials({
-		RoleArn: roleArn, WebIdentityToken: idToken,
-	})
-
-	AWS.config.update({
-		region: 'ap-southeast-1',
-		logger: console,
-	})
-
-	window.docClient = new AWS.DynamoDB.DocumentClient({region: 'ap-southeast-1'});
-
-}
+import { signOut, signedIn, currentUserProfile, onSessionChange } from '../services/auth'
 
 export default {
-	name: "App",
+	name: 'App',
+	data: () => ({
+		currentUser: null,
+	}),
+	created() {
+		onSessionChange(this.handleSessionStatus)
+		this.handleSessionStatus(signedIn())
+	},
+	methods: {
+		signOut() {
+			signOut()
+			this.user = null
+		},
+		handleSessionStatus(signedIn) {
+			if (signedIn) {
+				const user = currentUserProfile()
+				this.currentUser = {
+					name: user.getName()
+				}
+			} else {
+				this.currentUser = null
+				this.$router.push('/signin')
+			}
+		},
+	}
 }
 </script>
 
