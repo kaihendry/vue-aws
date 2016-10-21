@@ -1,6 +1,6 @@
 <template>
 	<div id="app">
-		<p v-if="currentUser">{{currentUser.name}}</p>
+		<p v-if="currentUser">{{currentUser.name}} <button @click="signOut">Sign Out</button></p>
 		<p>Goal: Google login &rarr; AWS login (STS) &rarr; AWS.DynamoDB.DocumentClient
 		<p>Without button. Without Window object ideally.
 		<p>
@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { signedIn, currentUserProfile } from '../services/auth'
+import { signOut, signedIn, currentUserProfile, onSessionChange } from '../services/auth'
 
 export default {
 	name: 'App',
@@ -20,14 +20,26 @@ export default {
 		currentUser: null,
 	}),
 	created() {
-		signedIn().then(() => {
-			currentUserProfile().then((user) => {
+		onSessionChange(this.handleSessionStatus)
+		this.handleSessionStatus(signedIn())
+	},
+	methods: {
+		signOut() {
+			signOut()
+			this.user = null
+		},
+		handleSessionStatus(signedIn) {
+			if (signedIn) {
+				const user = currentUserProfile()
 				this.currentUser = {
 					name: user.getName()
 				}
-			})
-		})
-	},
+			} else {
+				this.currentUser = null
+				this.$router.push('/signin')
+			}
+		},
+	}
 }
 </script>
 

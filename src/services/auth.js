@@ -1,69 +1,46 @@
 const GAPI = window.gapi
 const CLIENT_ID = '508199377210-gbh8a1rbr52kqtgrildqheb1blf88fve.apps.googleusercontent.com'
 
-let onAuthInit = null
 let GoogleAuth = null
 
-const authListeners = []
+let sessionListeners = []
 
-const AuthPromise = new Promise((resolve) => {
-	GAPI.load('auth2', () => {
-		let init = true
-
-		GAPI.auth2.init({
-			client_id: CLIENT_ID,
-		})
-
-		GoogleAuth = GAPI.auth2.getAuthInstance()
-
-		GoogleAuth.currentUser.listen(() => {
-			updateListeners()
-			if (init) {
-				resolve()
-				init = false
-			}
-		})
-	})
-})
-
-export function signedIn() {
-	return new Promise((resolve, reject) => {
-		AuthPromise.then(() => {
-			if (GoogleAuth.isSignedIn.get()) {
-				resolve()
-			} else {
-				reject()
-			}
-		})
-	})
+export function onSessionChange(cb) {
+	sessionListeners.push(cb)
 }
 
-export function onAuthUpdate(cb) {
-	authListeners.push(cb)
+function fireSessionChange(signedIn) {
+	sessionListeners.forEach((cb) => cb(signedIn))
 }
 
-export function signIn() {
-	return GoogleAuth.signIn().then(() => {
-		updateListeners()
-	})
-}
-
-export function currentUser() {
+export function initAuth() {
 	return new Promise((resolve) => {
-		AuthPromise.then(() => {
-			resolve(GoogleAuth.currentUser.get())
+		GAPI.load('auth2', () => {
+			GAPI.auth2.init({
+				client_id: CLIENT_ID,
+			})
+
+			GoogleAuth = GAPI.auth2.getAuthInstance()
+
+			GoogleAuth.then(() => {
+				GoogleAuth.isSignedIn.listen((signedIn) => {
+					fireSessionChange(signedIn)
+				})
+				fireSessionChange(signedIn())
+				resolve()
+			})
 		})
 	})
 }
 
-export function currentUserProfile() {
-	return currentUser().then((user) => user.getBasicProfile())
-}
+export const signedIn = () => GoogleAuth.isSignedIn.get()
 
-export function getIdToken() {
-	return currentUser().then((user) => user.getAuthResponse().id_token)
-}
+export const signIn = (opts) => GoogleAuth.signIn(opts)
 
-function updateListeners() {
-	authListeners.forEach((cb) => cb())
-}
+export const signOut = (opts) => GoogleAuth.signOut(opts)
+
+export const currentUser = () => GoogleAuth.currentUser.get()
+
+export const currentUserProfile = () => currentUser().getBasicProfile()
+
+export const getIdToken = () => currentUser().getAuthResponse().id_token

@@ -15,16 +15,15 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-	if (to.meta.auth) {
-		signedIn()
-		.then(() => next(), () => {
-			next({
-				path: '/signin',
-				params: { redirect: to.path },
-			})
+	if (to.meta.auth && !signedIn()) {
+		next({
+			path: '/signin',
+			params: { redirect: to.path },
 		})
 	} else {
-		next()
+		// setTimeout to make sure the session listeners
+		// have been executed first
+		setTimeout(() => next(), 0)
 	}
 })
 

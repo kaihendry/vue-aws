@@ -1,24 +1,23 @@
 <template>
 	<div>
-		<div ref='test' @click="startSignIn">Sign In</div>
+		<button @click="signInHandler">Sign In</button>
 		<span v-if="error">{{error}}</span>
 	</div>
 	
 </template>
 
 <script>
+import { signIn } from '../services/auth'
+
 export default {
 	data: () => ({
 		error: null
 	}),
-	mounted() {
-		gapi.signin2.render(this.$refs.test, {
-			theme: 'dark',
-			onsuccess: this.success,
-			onfailure: this.failure,
-		})
-	},
 	methods: {
+		signInHandler() {
+			signIn()
+			.then(this.success, this.failure)
+		},
 		success() {
 			this.$router.push(this.$route.params.redirect || '/')
 		},
