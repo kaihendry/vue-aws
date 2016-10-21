@@ -1,5 +1,6 @@
 <template>
 	<div id="app">
+		<p v-if="currentUser">{{currentUser.name}}</p>
 		<p>Goal: Google login &rarr; AWS login (STS) &rarr; AWS.DynamoDB.DocumentClient
 		<p>Without button. Without Window object ideally.
 		<p>
@@ -11,8 +12,22 @@
 </template>
 
 <script>
+import { signedIn, currentUserProfile } from '../services/auth'
+
 export default {
-	name: "App",
+	name: 'App',
+	data: () => ({
+		currentUser: null,
+	}),
+	created() {
+		signedIn().then(() => {
+			currentUserProfile().then((user) => {
+				this.currentUser = {
+					name: user.getName()
+				}
+			})
+		})
+	},
 }
 </script>
 

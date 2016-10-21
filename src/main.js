@@ -1,9 +1,15 @@
 import Vue from 'vue'
 import App from './components/App.vue'
 import router from './router'
-import { signInHandler } from './lib/auth'
 
-window.onSignIn = signInHandler
+import { onAuthUpdate, getIdToken } from './services/auth'
+import { setAWSCredentials } from './services/aws'
+
+onAuthUpdate(() => {
+	getIdToken().then((idToken) => {
+		setAWSCredentials(idToken)
+	})
+})
 
 new Vue({
 	router,
