@@ -26,3 +26,5 @@ AWS services.
 
 1. <https://console.developers.google.com/apis/credentials?project=kubernetes-tutorial-146110>
 2. <https://console.aws.amazon.com/iam/home?region=ap-southeast-1#roles/vueaws>
+
+A note about limiting it to your [Google Apps domain](http://stackoverflow.com/questions/40098541/g-suite-identity-provider-for-an-aws-driven-browser-based-app)
