@@ -15,31 +15,31 @@
 import { signOut, signedIn, currentUserProfile, onSessionChange } from '../services/auth'
 
 export default {
-	name: 'App',
-	data: () => ({
-		currentUser: null,
-	}),
-	created() {
-		onSessionChange(this.handleSessionStatus)
-		this.handleSessionStatus(signedIn())
-	},
-	methods: {
-		signOut() {
-			signOut()
-			this.user = null
-		},
-		handleSessionStatus(signedIn) {
-			if (signedIn) {
-				const user = currentUserProfile()
-				this.currentUser = {
-					name: user.getName()
-				}
-			} else {
-				this.currentUser = null
-				this.$router.push('/signin')
-			}
-		},
-	}
+  name: 'App',
+  data: () => ({
+    currentUser: null
+  }),
+  created () {
+    onSessionChange(this.handleSessionStatus)
+    this.handleSessionStatus(signedIn())
+  },
+  methods: {
+    signOut () {
+      signOut()
+      this.user = null
+    },
+    handleSessionStatus (signedIn) {
+      if (signedIn) {
+        const user = currentUserProfile()
+        this.currentUser = {
+          name: user.getName()
+        }
+      } else {
+        this.currentUser = null
+        this.$router.push('/signin')
+      }
+    }
+  }
 }
 </script>
 

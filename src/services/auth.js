@@ -5,32 +5,32 @@ let GoogleAuth = null
 
 let sessionListeners = []
 
-export function onSessionChange(cb) {
-	sessionListeners.push(cb)
+export function onSessionChange (cb) {
+  sessionListeners.push(cb)
 }
 
-function fireSessionChange(signedIn) {
-	sessionListeners.forEach((cb) => cb(signedIn))
+function fireSessionChange (signedIn) {
+  sessionListeners.forEach((cb) => cb(signedIn))
 }
 
-export function initAuth() {
-	return new Promise((resolve) => {
-		GAPI.load('auth2', () => {
-			GAPI.auth2.init({
-				client_id: CLIENT_ID,
-			})
+export function initAuth () {
+  return new Promise((resolve) => {
+    GAPI.load('auth2', () => {
+      GAPI.auth2.init({
+        client_id: CLIENT_ID
+      })
 
-			GoogleAuth = GAPI.auth2.getAuthInstance()
+      GoogleAuth = GAPI.auth2.getAuthInstance()
 
-			GoogleAuth.then(() => {
-				GoogleAuth.isSignedIn.listen((signedIn) => {
-					fireSessionChange(signedIn)
-				})
-				fireSessionChange(signedIn())
-				resolve()
-			})
-		})
-	})
+      GoogleAuth.then(() => {
+        GoogleAuth.isSignedIn.listen((signedIn) => {
+          fireSessionChange(signedIn)
+        })
+        fireSessionChange(signedIn())
+        resolve()
+      })
+    })
+  })
 }
 
 export const signedIn = () => GoogleAuth.isSignedIn.get()

@@ -18,33 +18,33 @@
 import { AwsDocClient } from '../services/aws'
 
 export default {
-	name: 'dynamodb',
-	data: () => ({
-		loading: true,
-		items: [],
-		count: 0,
-		scannedcount: 0,
-	}),
-	methods: {
-		scan() {
-			let params = {
-				TableName: 'Music'
-			}
+  name: 'dynamodb',
+  data: () => ({
+    loading: true,
+    items: [],
+    count: 0,
+    scannedcount: 0
+  }),
+  methods: {
+    scan () {
+      let params = {
+        TableName: 'Music'
+      }
 
-			// http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB/DocumentClient.html#scan-property
-			AwsDocClient.scan(params, (err, data) => {
-				this.loading = false
-				console.log('error', err)
-				if (!err) {
-					console.log(data)
-					this.items = data.Items
-					this.count = data.Count
-				}
-			})
-		},
-	},
-	created: function () {
-		this.scan()
-	}
+// http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB/DocumentClient.html#scan-property
+      AwsDocClient.scan(params, (err, data) => {
+        this.loading = false
+        console.log('error', err)
+        if (!err) {
+          console.log(data)
+          this.items = data.Items
+          this.count = data.Count
+        }
+      })
+    }
+  },
+  created: function () {
+    this.scan()
+  }
 }
 </script>
