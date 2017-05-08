@@ -1,13 +1,10 @@
 language: node_js
 node_js:
   - node
-install:
-  - npm -g install yarn
-  - yarn
 script:
+  - npm i
   - npm run lint
   - npm run build
 cache:
   directories:
-    - ~/.yarn
     - ~/.nvm

@@ -10,7 +10,7 @@ demonstrate my issue.
 
 # To run
 
-	yarn
+	npm i
 	npm run dev
 
 Authenticate with any Google account from http://localhost:8080

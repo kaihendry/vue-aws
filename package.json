@@ -6,12 +6,13 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --inline --hot",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
-    "lint": "eslint --fix --ext .js,.vue src"
+    "lint": "eslint --fix --ext .js,.vue ."
   },
   "dependencies": {
     "aws-sdk": "^2.49.0",
     "cross-env": "^4.0.0",
-    "vue": "^2.3.2"
+    "vue": "^2.3.2",
+    "vue-template-compiler": "^2.3.2"
   },
   "devDependencies": {
     "babel-core": "^6.24.1",
