@@ -1,8 +1,6 @@
 <template>
 	<div id="app">
 		<p v-if="currentUser">{{currentUser.name}} <button @click="signOut">Sign Out</button></p>
-		<p>Goal: Google login &rarr; AWS login (STS) &rarr; AWS.DynamoDB.DocumentClient
-		<p>Without button. Without Window object ideally.
 		<p>
 		<router-link to="/">AWS DYNAMODB</router-link>
 		</p>
@@ -46,10 +44,7 @@ export default {
 <style>
 body {
 	margin: 0;
-	font-size: 2rem;
+	font-size: 1.2rem;
 	font-family: sans-serif;
-}
-.page {
-	text-align: center;
 }
 </style>

@@ -5,8 +5,7 @@
 			<p>Count: {{ count }}</p>
 			<ol>
 				<li v-for="item in items">
-					Artist: {{ item.Artist }}
-					Song title: {{ item.SongTitle }}
+					{{ item }}
 				</li>
 			</ol>
 			<p v-if="items.length === 0">No data</p>
@@ -28,7 +27,7 @@ export default {
   methods: {
     scan () {
       let params = {
-        TableName: 'Music'
+        TableName: 'Movies'
       }
 
 // http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB/DocumentClient.html#scan-property
