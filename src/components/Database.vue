@@ -1,20 +1,26 @@
 <template>
-	<div class="page">
-		<span v-if="loading">Loading...</span>
-		<div v-if="!loading">
-			<p>Count: {{ count }}</p>
-			<ol>
-				<li v-for="item in items">
-					{{ item }}
-				</li>
-			</ol>
-			<p v-if="items.length === 0">No data</p>
-		</div>
-	</div>
+<div class="page">
+<span v-if="loading">Loading...</span>
+<div v-if="!loading">
+<p>Count: {{ count }}</p>
+
+<demo-grid
+:data="filteredItems"
+:columns="gridColumns"
+:filter-key="searchQuery">
+</demo-grid>
+
+<p v-if="items.length === 0">No data</p>
+</div>
+
+<p><a href="https://github.com/aws/aws-sdk-js/releases">AWS SDK version: {{ awsversion }}</a></p>
+</div>
 </template>
 
 <script>
+import AWS from 'aws-sdk/global'
 import { AwsDocClient } from '../services/aws'
+import grid from './Grid.vue'
 
 export default {
   name: 'dynamodb',
@@ -22,8 +28,21 @@ export default {
     loading: true,
     items: [],
     count: 0,
-    scannedcount: 0
+    searchQuery: '',
+    awsversion: AWS.VERSION,
+    scannedcount: 0,
+    gridColumns: ['uuid', 'updated_at', 'status', 'title']
   }),
+  computed: {
+    filteredItems () {
+      const status = this.$route.path.substring(1)
+      if (status) {
+        console.log("Status", status)
+        return this.items.filter(item => item.status === status)
+      }
+      return this.items
+    }
+  },
   methods: {
     scan () {
       let params = {
@@ -44,6 +63,10 @@ export default {
   },
   created: function () {
     this.scan()
+  },
+  components: {
+    'demo-grid': grid
   }
+
 }
 </script>

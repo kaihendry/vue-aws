@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import DB from '../components/Database.vue'
 import SignIn from '../components/SignIn.vue'
+import Database from '../components/Database.vue'
 
 import { signedIn } from '../services/auth'
 
@@ -9,8 +9,12 @@ Vue.use(Router)
 
 const router = new Router({
   routes: [
-      { path: '/signin', component: SignIn },
-      { path: '/', component: DB, meta: { auth: true } }
+    { path: '/signin', component: SignIn },
+    { path: '/new', component: Database, meta: { auth: true } },
+    { path: '/in-progress', component: Database, meta: { auth: true } },
+    { path: '/processing', component: Database, meta: { auth: true } },
+    { path: '/done', component: Database, meta: { auth: true } },
+    { path: '/', component: Database, meta: { auth: true } }
   ]
 })
 
