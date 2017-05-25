@@ -47,6 +47,7 @@ export default {
       var params = {
         TableName: 'Movies',
         Limit: this.Limit,
+        ScanIndexForward: false,
         IndexName: 'status-updated_at-index',
         KeyConditionExpression: '#status = :key',
         ExpressionAttributeValues: {

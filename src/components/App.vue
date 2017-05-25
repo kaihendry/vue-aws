@@ -1,9 +1,6 @@
 <template>
 	<div id="app">
 		<p v-if="currentUser">{{currentUser.name}} <button @click="signOut">Sign Out</button></p>
-		<p>
-		<router-link to="/">AWS DYNAMODB</router-link>
-		</p>
 		<router-view></router-view>
 		<p><a href=https://github.com/kaihendry/vue-aws>Source code</a></p>
 	</div>
