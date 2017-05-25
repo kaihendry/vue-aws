@@ -19,7 +19,7 @@
 </tr>
 </thead>
 <tbody>
-<tr v-if="filteredData.length == 0">
+<tr v-if="!filteredData || filteredData.length == 0">
 <td style="font-style: oblique;" colspan="100%">No values</td>
 </tr>
 <tr v-for="entry in filteredData">
@@ -34,7 +34,6 @@
 
 
 <script>
-    import { AwsDocClient } from '../services/aws'
 
     export default {
       replace: true,
@@ -84,6 +83,9 @@
       methods: {
         format (entry, key) {
           switch (key) {
+            case "updated_at":
+              return new Date(Number(entry[key]))
+              break;
             default:
               return entry[key]
           }

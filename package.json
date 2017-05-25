@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --inline --hot",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
-    "lint": "eslint --fix --ext .js,.vue ."
+    "lint": "eslint --fix --ext .js,.vue src"
   },
   "dependencies": {
     "aws-sdk": "^2.57.0",

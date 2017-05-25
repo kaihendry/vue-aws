@@ -4,6 +4,9 @@
 <span v-if="loading">Loading...</span>
 <div v-if="!loading">
 <p>Count: {{ count }}</p>
+<input v-model.number="Limit" type="number">
+<p>LastEvaluatedKey: {{ LastEvaluatedKey }}</p>
+<router-link :to="{ query: LastEvaluatedKey }">Next {{ Limit }}</router-link>
 
 <demo-grid
 :data="filteredItems"
@@ -11,7 +14,6 @@
 :filter-key="searchQuery">
 </demo-grid>
 
-<p v-if="items.length === 0">No data</p>
 </div>
 
 <p><a href="https://github.com/aws/aws-sdk-js/releases">AWS SDK version: {{ awsversion }}</a></p>
@@ -29,39 +31,46 @@ export default {
     loading: false,
     items: [],
     count: 0,
+    Limit: 10,
+    LastEvaluatedKey: {},
     searchQuery: '',
     awsversion: AWS.VERSION,
-    scannedcount: 0,
     gridColumns: ['uuid', 'updated_at', 'status', 'title']
   }),
   asyncComputed: {
     filteredItems () {
-      const status = this.$route.path.substring(1)
-      if (status) {
-        console.log("Status", status)
+      console.log('Route', this.$route)
+      console.log('Route status', this.$route.params.status, 'Page', this.$route.params.page, 'Query', this.$route.query)
+      const status = this.$route.params.status
+      console.log('Status', status)
 
-        var params = {
-          TableName: "Movies",
-          IndexName: 'status-updated_at-index',
-          KeyConditionExpression: '#status = :key',
-          ExpressionAttributeValues: {
-            ':key': status
-          },
-          ExpressionAttributeNames: {
-            '#status': 'status'
-          }
+      var params = {
+        TableName: 'Movies',
+        Limit: this.Limit,
+        IndexName: 'status-updated_at-index',
+        KeyConditionExpression: '#status = :key',
+        ExpressionAttributeValues: {
+          ':key': status
+        },
+        ExpressionAttributeNames: {
+          '#status': 'status'
         }
-
-        return AwsDocClient.query(params).promise()
-          .then((data) => {
-            console.log(data)
-            this.loading = false
-            this.items = data.Items
-            this.count = data.Items.length
-            return data.Items
-          })
-
       }
+
+      if (this.$route.query.uuid) {
+        console.log('Starting from', this.$route.query)
+        params.ExclusiveStartKey = this.$route.query
+      }
+
+      return AwsDocClient.query(params).promise()
+        .then((data) => {
+          console.log(data)
+          this.loading = false
+          this.items = data.Items
+          this.LastEvaluatedKey = data.LastEvaluatedKey
+          this.count = data.Items.length
+          return data.Items
+        })
     }
   },
   components: {
