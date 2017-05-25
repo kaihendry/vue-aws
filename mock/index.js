@@ -6,7 +6,7 @@ const randomstatus = function () {
   return statuses[Math.floor(Math.random() * statuses.length)]
 }
 
-const list = Array.from({length: 10}, function () {
+const list = Array.from({length: 20}, function () {
   return { 'PutRequest': {
     'Item': {
       'uuid': { S: chance.guid() },

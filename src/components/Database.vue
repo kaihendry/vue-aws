@@ -1,4 +1,5 @@
 <template>
+<!-- vim: set sw=2 sts=2 expandtab: -->
 <div class="page">
 <span v-if="loading">Loading...</span>
 <div v-if="!loading">
@@ -25,7 +26,7 @@ import grid from './Grid.vue'
 export default {
   name: 'dynamodb',
   data: () => ({
-    loading: true,
+    loading: false,
     items: [],
     count: 0,
     searchQuery: '',
@@ -33,36 +34,35 @@ export default {
     scannedcount: 0,
     gridColumns: ['uuid', 'updated_at', 'status', 'title']
   }),
-  computed: {
+  asyncComputed: {
     filteredItems () {
       const status = this.$route.path.substring(1)
       if (status) {
         console.log("Status", status)
-        return this.items.filter(item => item.status === status)
-      }
-      return this.items
-    }
-  },
-  methods: {
-    scan () {
-      let params = {
-        TableName: 'Movies'
-      }
 
-// http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB/DocumentClient.html#scan-property
-      AwsDocClient.scan(params, (err, data) => {
-        this.loading = false
-        console.log('error', err)
-        if (!err) {
-          console.log(data)
-          this.items = data.Items
-          this.count = data.Count
+        var params = {
+          TableName: "Movies",
+          IndexName: 'status-updated_at-index',
+          KeyConditionExpression: '#status = :key',
+          ExpressionAttributeValues: {
+            ':key': status
+          },
+          ExpressionAttributeNames: {
+            '#status': 'status'
+          }
         }
-      })
+
+        return AwsDocClient.query(params).promise()
+          .then((data) => {
+            console.log(data)
+            this.loading = false
+            this.items = data.Items
+            this.count = data.Items.length
+            return data.Items
+          })
+
+      }
     }
-  },
-  created: function () {
-    this.scan()
   },
   components: {
     'demo-grid': grid
