@@ -3,10 +3,10 @@
 <div class="page">
 <span v-if="loading">Loading...</span>
 <div v-if="!loading">
-<p>Count: {{ count }}</p>
-<input v-model.number="Limit" type="number">
+<p>Toal: {{ total }}</p>
+<label>Item limit <input v-model.number="Limit" type="number"></label>
+<router-link v-if=" LastEvaluatedKey" :to="{ query: LastEvaluatedKey }" tag=button>Next</router-link>
 <p>LastEvaluatedKey: {{ LastEvaluatedKey }}</p>
-<router-link :to="{ query: LastEvaluatedKey }">Next {{ Limit }}</router-link>
 
 <demo-grid
 :data="filteredItems"
@@ -28,9 +28,7 @@ import grid from './Grid.vue'
 export default {
   name: 'dynamodb',
   data: () => ({
-    loading: false,
-    items: [],
-    count: 0,
+    loading: true,
     Limit: 10,
     LastEvaluatedKey: {},
     searchQuery: '',
@@ -38,9 +36,32 @@ export default {
     gridColumns: ['uuid', 'updated_at', 'status', 'title']
   }),
   asyncComputed: {
+total () {
+
+      var params = {
+        TableName: 'Movies',
+        IndexName: 'status-updated_at-index',
+        KeyConditionExpression: '#status = :key',
+        ExpressionAttributeValues: {
+          ':key': this.$route.params.status
+        },
+        ExpressionAttributeNames: {
+          '#status': 'status'
+        },
+        Select: 'COUNT'
+      }
+
+      return AwsDocClient.query(params).promise()
+        .then((data) => {
+          console.log("COUNT", data)
+          document.title = `Status: ${this.$route.params.status.charAt(0).toUpperCase() + this.$route.params.status.slice(1)} has ${data.Count} items`
+          return data.Count
+        })
+    },
+
     filteredItems () {
       console.log('Route', this.$route)
-      console.log('Route status', this.$route.params.status, 'Page', this.$route.params.page, 'Query', this.$route.query)
+      console.log('Route status', this.$route.params.status, 'Query', this.$route.query)
       const status = this.$route.params.status
       console.log('Status', status)
 
@@ -65,11 +86,10 @@ export default {
 
       return AwsDocClient.query(params).promise()
         .then((data) => {
-          console.log(data)
+          // console.log(data)
           this.loading = false
-          this.items = data.Items
           this.LastEvaluatedKey = data.LastEvaluatedKey
-          this.count = data.Items.length
+          // this.count = data.Items.length
           return data.Items
         })
     }

@@ -8,6 +8,7 @@ import { signedIn } from '../services/auth'
 Vue.use(Router)
 
 const router = new Router({
+  mode: 'history',
   routes: [
     { path: '/signin', component: SignIn },
     { path: '/:status', component: Database, meta: { auth: true } },
