@@ -83,9 +83,8 @@
       methods: {
         format (entry, key) {
           switch (key) {
-            case "updated_at":
+            case 'updated_at':
               return new Date(Number(entry[key]))
-              break;
             default:
               return entry[key]
           }
