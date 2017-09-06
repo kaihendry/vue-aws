@@ -52,4 +52,8 @@ if (process.env.NODE_ENV === 'production') {
       }
     })
   ])
+} else {
+  var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+  var DashboardPlugin = require('webpack-dashboard/plugin');
+  module.exports.plugins = [ new BundleAnalyzerPlugin(), new DashboardPlugin() ]
 }

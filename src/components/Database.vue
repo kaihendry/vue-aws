@@ -36,8 +36,7 @@ export default {
     gridColumns: ['uuid', 'updated_at', 'status', 'title']
   }),
   asyncComputed: {
-total () {
-
+    total () {
       var params = {
         TableName: 'Movies',
         IndexName: 'status-updated_at-index',
@@ -53,7 +52,7 @@ total () {
 
       return AwsDocClient.query(params).promise()
         .then((data) => {
-          console.log("COUNT", data)
+          console.log('COUNT', data)
           document.title = `Status: ${this.$route.params.status.charAt(0).toUpperCase() + this.$route.params.status.slice(1)} has ${data.Count} items`
           return data.Count
         })
