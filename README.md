@@ -1,5 +1,7 @@
 # Goal
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/kaihendry/vue-aws.svg)](https://greenkeeper.io/)
+
 Using AWS services from VueJS whilst authenticated from the browser.
 
 Since JSFiddle can't be used for [VUE](http://vuejs.org/) component files, I
