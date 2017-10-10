@@ -34,7 +34,6 @@
 
 
 <script>
-
     export default {
       replace: true,
       props: {

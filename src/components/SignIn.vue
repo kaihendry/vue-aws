@@ -16,7 +16,7 @@ export default {
   methods: {
     signInHandler () {
       signIn()
-      .then(this.success, this.failure)
+        .then(this.success, this.failure)
     },
     success () {
       this.$router.push(this.$route.params.redirect || '/')
