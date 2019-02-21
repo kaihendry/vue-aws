@@ -9,7 +9,7 @@
     "lint": "eslint --fix --ext .js,.vue src"
   },
   "dependencies": {
-    "aws-sdk": "^2.130.0",
+    "aws-sdk": "^2.407.0",
     "cross-env": "^5.0.5",
     "vue": "^2.4.4",
     "vue-async-computed": "^3.3.1",
