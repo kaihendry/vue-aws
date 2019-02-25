@@ -1,0 +1,19 @@
+{
+  "name": "vuestatic",
+  "profile": "mine",
+  "regions": [
+    "ap-southeast-1"
+  ],
+  "stages": {
+    "production": {
+      "domain": "vuestatic.dabase.com"
+    }
+  },
+  "error_pages": {
+    "disable": true
+  },
+  "type": "static",
+  "static": {
+    "dir": "public"
+  }
+}

@@ -1,32 +1,28 @@
 # Goal
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/kaihendry/vue-aws.svg)](https://greenkeeper.io/)
+Using AWS services from VueJS whilst authenticated from the browser. No
+back-end like [Internal Github
+login](https://github.com/unee-t/internal-github-login) used.
 
-Using AWS services from VueJS whilst authenticated from the browser.
+Uses [dynamic
+imports](https://developers.google.com/web/updates/2017/11/dynamic-import) to
+avoid Webpack hell, however this sadly doesn't work in Firefox without some
+hoop jumping.
 
-Since JSFiddle can't be used for [VUE](http://vuejs.org/) component files, I
-guess the only way to do this is to setup an entire Github project to
-demonstrate my issue.
+## Cons
 
-<http://forum.vuejs.org/t/vue-component-start/1716>
-
-# To run
-
-	npm i
-	npm run dev
-
-Authenticate with any Google account from http://localhost:8080
-
-# Implementation notes
-
-Uses the router with the idea being I can build user interfaces around several
-AWS services.
+Once associating the domain with the role, you can't really do fine grained
+access user by user since each user would effectively have the same permissions
+and the code is all run in the front end. Be wary that a user can effectively
+set a break point and change your code to leverage what permissions they have.
 
 # Authentication setup
 
-<img src=http://s.natalian.org/2016-10-20/1476933346_2558x1404.png alt="Trust relasonship">
+<img src="https://s.natalian.org/2019-02-25/1551056818_2560x1440.png" alt="Google Client ID for Web application">
+<img src="https://s.natalian.org/2019-02-25/1551056320_2560x1440.png" alt="Trust relasonship">
 
-1. <https://console.developers.google.com/apis/credentials?project=kubernetes-tutorial-146110>
+1. <https://console.developers.google.com/apis/credentials?project=vue-aws>
 2. <https://console.aws.amazon.com/iam/home?region=ap-southeast-1#roles/vueaws>
 
-A note about limiting it to your [Google Apps domain](http://stackoverflow.com/questions/40098541/g-suite-identity-provider-for-an-aws-driven-browser-based-app)
+A note about limiting it to your (company's) [Google Apps
+domain](http://stackoverflow.com/questions/40098541/g-suite-identity-provider-for-an-aws-driven-browser-based-app).

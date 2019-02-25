@@ -1,5 +1,5 @@
-import AWS from 'aws-sdk/global'
-import 'aws-sdk/clients/dynamodb'
+// import AWS from 'aws-sdk/global'
+// import 'aws-sdk/clients/dynamodb'
 
 const ROLE_ARN = 'arn:aws:iam::407461997746:role/vueaws'
 

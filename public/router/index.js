@@ -1,13 +1,9 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import SignIn from '../components/SignIn.vue'
-import Database from '../components/Database.vue'
+import SignIn from '../components/SignIn.js'
+import Database from '../components/Database.js'
 
-import { signedIn } from '../services/auth'
+import { signedIn } from '../services/auth.js'
 
-Vue.use(Router)
-
-const router = new Router({
+const router = new VueRouter({
   mode: 'history',
   routes: [
     { path: '/signin', component: SignIn },

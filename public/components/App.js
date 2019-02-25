@@ -1,13 +1,4 @@
-<template>
-	<div id="app">
-		<p v-if="currentUser">{{currentUser.name}} <button @click="signOut">Sign Out</button></p>
-		<router-view></router-view>
-		<p><a href=https://github.com/kaihendry/vue-aws>Source code</a></p>
-	</div>
-</template>
-
-<script>
-import { signOut, signedIn, currentUserProfile, onSessionChange } from '../services/auth'
+import { signOut, signedIn, currentUserProfile, onSessionChange } from '../services/auth.js'
 
 export default {
   name: 'App',
@@ -18,6 +9,12 @@ export default {
     onSessionChange(this.handleSessionStatus)
     this.handleSessionStatus(signedIn())
   },
+  template: `
+	<div id="app">
+		<p v-if="currentUser">{{currentUser.name}} <button @click="signOut">Sign Out</button></p>
+		<router-view></router-view>
+		<p><a href=https://github.com/kaihendry/vue-aws>Source code</a></p>
+	</div>`,
   methods: {
     signOut () {
       signOut()
@@ -36,12 +33,3 @@ export default {
     }
   }
 }
-</script>
-
-<style>
-body {
-	margin: 0;
-	font-size: 1.2rem;
-	font-family: sans-serif;
-}
-</style>

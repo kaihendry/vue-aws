@@ -1,5 +1,5 @@
 const GAPI = window.gapi
-const CLIENT_ID = '508199377210-gbh8a1rbr52kqtgrildqheb1blf88fve.apps.googleusercontent.com'
+const CLIENT_ID = '7092380157-jgijgfk6n5d24039u9j03g0qumbncqt7.apps.googleusercontent.com'
 
 let GoogleAuth = null
 
@@ -19,9 +19,7 @@ export function initAuth () {
       GAPI.auth2.init({
         client_id: CLIENT_ID
       })
-
       GoogleAuth = GAPI.auth2.getAuthInstance()
-
       GoogleAuth.then(() => {
         GoogleAuth.isSignedIn.listen((signedIn) => {
           fireSessionChange(signedIn)
@@ -34,13 +32,8 @@ export function initAuth () {
 }
 
 export const signedIn = () => GoogleAuth.isSignedIn.get()
-
 export const signIn = (opts) => GoogleAuth.signIn(opts)
-
 export const signOut = (opts) => GoogleAuth.signOut(opts)
-
 export const currentUser = () => GoogleAuth.currentUser.get()
-
 export const currentUserProfile = () => currentUser().getBasicProfile()
-
 export const getIdToken = () => currentUser().getAuthResponse().id_token

@@ -1,18 +1,13 @@
-<template>
-	<div>
-		<button @click="signInHandler">Sign In</button>
-		<span v-if="error">{{error}}</span>
-	</div>
-	
-</template>
-
-<script>
-import { signIn } from '../services/auth'
+import { signIn } from '../services/auth.js'
 
 export default {
   data: () => ({
     error: null
   }),
+  template: `<div>
+	<button @click="signInHandler">Sign In</button>
+	<span v-if="error">{{error}}</span>
+	</div>`,
   methods: {
     signInHandler () {
       signIn()
@@ -26,4 +21,3 @@ export default {
     }
   }
 }
-</script>
